@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#maven build (create JAR file)
+
+mvn clean package
+if sudo docker ps -a | grep spring
+then 
+sudo docker stop spring
+sudo docker rm spring
+sudo docker rmi spring-boot-hello-world:latest
+fi
+#build docker
+sudo docker build -t spring-boot-hello-world:latest . 
+
+#clean up old containers
+
+#run container 
+sudo docker run -d -p 9000:9000 --name spring spring-boot-hello-world
+
+

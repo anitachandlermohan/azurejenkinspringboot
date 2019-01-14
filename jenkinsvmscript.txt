@@ -1,0 +1,11 @@
+#Jenkins VM
+#store ssh keys on first machine and change permissions so jenkins can access
+mkdir /var/lib/jenkins/.ssh
+ssh-keygen /var/lib/jenkins/ssh/id_rsa
+cd /var/lib/jenkins 
+chown -R jenkins:jenkins .ssh
+chmod 700 .ssh
+chmod 600 ~/.ssh/*
+
+#create jenkins user on second machine and then create .ssh file in home directory, then change permissions
+so jenkins can see authorized_keys file 
