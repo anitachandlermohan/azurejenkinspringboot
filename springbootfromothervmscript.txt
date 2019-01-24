@@ -1,0 +1,18 @@
+#!/bin/bash
+PROJECT="spring-boot-hello-world"
+mvn clean package
+#copy JAR to other machine 
+scp ~/target/hello-world*.jar jenkins@10.0.0.5:~/
+#ssh to other machine
+ssh -tt 10.0.0.5 << EOF
+PID_FILE=$PROJECT/PID
+OLD_PID=$(cat ${PID_FILE})
+kill -9 ${OLD_PID}
+rm -rf $PROJECT
+mkdir -p  $PROJECT
+# run the new application
+BUILD_ID=dontKillMe
+java -jar ~/hello-world*.jar &
+echo $! > ${PID_FILE}
+disown
+EOF
